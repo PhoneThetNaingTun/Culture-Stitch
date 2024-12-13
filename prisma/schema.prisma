@@ -1,0 +1,206 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String  @map("user_id")
+  type              String
+  provider          String
+  providerAccountId String  @map("provider_account_id")
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@map("accounts")
+}
+
+enum Role {
+  User
+  Admin
+  Staff
+}
+
+enum Status {
+  Pending
+  Confirmed
+  Delivering
+  Delivered
+  Canceled
+}
+
+model User {
+  id            String         @id @default(cuid())
+  name          String?
+  email         String?        @unique
+  emailVerified DateTime?      @map("email_verified")
+  image         String?
+  password      String?
+  phone         String?
+  address       String?
+  role          Role           @default(User)
+  isArchived    Boolean?       @default(false)
+  accounts      Account[]
+  Reviews       Reviews[]
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  Board         Board[]
+  Orders        Orders[]
+  OrderConfirm  OrderConfirm[]
+
+  @@map("users")
+}
+
+model Reviews {
+  id        String   @id @default(cuid())
+  review    String
+  userId    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id])
+}
+
+model Board {
+  id        String   @id @default(cuid())
+  label     String
+  image     String
+  userId    String
+  onDisplay Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id])
+}
+
+model Orders {
+  id           String         @id @default(cuid())
+  userId       String
+  city         String
+  state        String
+  orderStatus  Status         @default(Pending)
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  user         User           @relation(fields: [userId], references: [id])
+  OrderDetails OrderDetails[]
+  OrderConfirm OrderConfirm[]
+}
+
+model OrderDetails {
+  id                String            @id @default(cuid())
+  productSCId       String
+  orderId           String
+  quantity          Int
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+  productSizeColors ProductSizeColors @relation(fields: [productSCId], references: [id])
+  order             Orders            @relation(fields: [orderId], references: [id])
+}
+
+model ProductCategoryTypes {
+  id                String              @id @default(cuid())
+  categroyTypeName  String
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @updatedAt
+  ProductCategories ProductCategories[]
+}
+
+model ProductCategories {
+  id                   String               @id @default(cuid())
+  categoryName         String
+  categoryTypeId       String
+  createdAt            DateTime             @default(now())
+  updatedAt            DateTime             @updatedAt
+  productCategoryTypes ProductCategoryTypes @relation(fields: [categoryTypeId], references: [id])
+  Products             Products[]
+}
+
+model Types {
+  id        String     @id @default(cuid())
+  type      String
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  Products  Products[]
+}
+
+model Products {
+  id                String            @id @default(cuid())
+  name              String
+  productCategoryId String
+  typeId            String
+  image             String
+  isFeatured        Boolean
+  price             Float
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+  productCategories ProductCategories @relation(fields: [productCategoryId], references: [id])
+  type              Types             @relation(fields: [typeId], references: [id])
+  ProductColors     ProductColors[]
+}
+
+model ProductColors {
+  id                String              @id @default(cuid())
+  productId         String
+  colorId           String
+  image             String
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @updatedAt
+  product           Products            @relation(fields: [productId], references: [id])
+  color             Colors              @relation(fields: [colorId], references: [id])
+  ProductSizeColors ProductSizeColors[]
+}
+
+model Colors {
+  id            String          @id @default(cuid())
+  color         String
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  ProductColors ProductColors[]
+}
+
+model ProductSizeColors {
+  id             String         @id @default(cuid())
+  productColorId String
+  sizeId         String
+  quantity       Int
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+  productColor   ProductColors  @relation(fields: [productColorId], references: [id])
+  size           Sizes          @relation(fields: [sizeId], references: [id])
+  OrderDetails   OrderDetails[]
+}
+
+model Sizes {
+  id                String              @id @default(cuid())
+  size              String
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @updatedAt
+  ProductSizeColors ProductSizeColors[]
+}
+
+model OrderConfirm {
+  id        String   @id @default(cuid())
+  orderId   String
+  userId    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  order     Orders   @relation(fields: [orderId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
+}
