@@ -96,16 +96,17 @@ export default function ProductCard({ data }: Prop) {
       </div>
 
       <CardHeader className="px-3 pt-3">
-        <h3 className=" text-base whitespace-wrap text-ellipsis overflow-hidden  font-semibold text-gray-900 h-12 ">
+        <h3 className="text-base font-bold text-gray-900 font-michroma overflow-hidden text-ellipsis h-12 line-clamp-2">
           {data.name}
         </h3>
-        <CardDescription className="text-xs text-gray-600 mt-1">
+
+        <CardDescription className="text-xs text-gray-600 mt-1 font-michroma">
           {productCategory?.categoryName}
         </CardDescription>
       </CardHeader>
 
-      <CardContent className="px-3 ">
-        <div className="flex gap-2 items-center py-2">
+      <CardContent className="px-3">
+        <div className="flex gap-2 items-center">
           {productColordata.map((item) => (
             <div
               key={item.id}
@@ -130,10 +131,10 @@ export default function ProductCard({ data }: Prop) {
         </div>
 
         <div className="flex justify-between items-center mt-2">
-          <p className="text-sm font-semibold text-gray-800">{data.price} Ks</p>
+          <p className="text-sm font-semibold font-michroma">{data.price} Ks</p>
           <Link
             href={`/categories/${categoryType?.id}/${productCategory?.id}/${data.id}`}
-            className="bg-gray-900 text-white text-sm font-medium px-5 py-2 rounded-md hover:bg-gray-700 transition-all duration-300"
+            className="bg-gray-900 text-white text-sm font-medium px-5 py-2 rounded-md hover:bg-white hover:text-black hover:border hover:border-black  transition-all duration-300"
           >
             View
           </Link>

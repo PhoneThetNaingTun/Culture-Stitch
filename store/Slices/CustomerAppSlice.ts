@@ -14,6 +14,7 @@ import { setCategoryTypes } from "./CategoryTypeSlice";
 import { setOrders } from "./OrderSlice";
 import { setOrderDetails } from "./OrderDetailSlice";
 import { setOrderConfirms } from "./OrderConfirmSlice";
+import { setReviews } from "./ReviewSlice";
 
 const initialState: customerAppSlice = {
   //@ts-ignore
@@ -43,12 +44,14 @@ export const fetchCustomerApp = createAsyncThunk(
       orders,
       orderDetails,
       orderConfirms,
+      reviews,
     } = dataFromServer;
     thunkApi.dispatch(setUser(user));
     thunkApi.dispatch(setBoard(boards));
     thunkApi.dispatch(setOrders(orders));
     thunkApi.dispatch(setTypes(types));
     thunkApi.dispatch(setColors(colors));
+    thunkApi.dispatch(setReviews(reviews));
     thunkApi.dispatch(setProducts(products));
     thunkApi.dispatch(setOrderDetails(orderDetails));
     thunkApi.dispatch(setOrderConfirms(orderConfirms));

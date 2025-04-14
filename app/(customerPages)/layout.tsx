@@ -149,7 +149,7 @@ const CustomerPageLayout = ({ children }: Prop) => {
   }, [user]);
 
   return (
-    <>
+    <div className="bg-slate-50">
       {customerAppSliceLoading ? (
         <div className="flex justify-center items-center h-screen">
           <LoaderCircle className="animate-spin w-10 h-10" />
@@ -161,7 +161,7 @@ const CustomerPageLayout = ({ children }: Prop) => {
           <Footer />
         </div>
       )}
-    </>
+    </div>
   );
 };
 

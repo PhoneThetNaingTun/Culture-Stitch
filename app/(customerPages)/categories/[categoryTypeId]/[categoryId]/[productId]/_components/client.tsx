@@ -16,9 +16,10 @@ import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import { motion } from "motion/react";
 import HyperText from "@/components/ui/hyper-text";
-import { Loader, Palette, Ruler } from "lucide-react";
+import { Loader, Palette, Ruler, ShoppingCart } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import CryptoJS from "crypto-js";
+import { cn } from "@/lib/utils";
 
 export default function ProductPageClient() {
   const router = useRouter();
@@ -135,11 +136,12 @@ export default function ProductPageClient() {
                 initial={{ opacity: 0, x: 30, y: -30 }}
                 animate={{ opacity: 1, x: 0, y: 0 }}
                 transition={{ delay: 0.3, ease: "easeInOut" }}
+                className="font-michroma"
               >
                 <p className="font-semibold text-xl lg:text-4xl">
                   {product?.name}
                 </p>
-                <p className="text-sm lg:text-xl text-gray-600">
+                <p className="text-sm lg:text-lg py-3 text-gray-600">
                   Category : {productCategory?.categoryName} <br />
                   <span className="text-sm">
                     Material Type : {productType?.type}
@@ -151,21 +153,26 @@ export default function ProductPageClient() {
                   initial={{ opacity: 0, x: 30 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: 0.3, ease: "easeInOut" }}
+                  className="font-michroma"
                 >
-                  <p className="font-semibold text-lg mt-2 flex items-center gap-1">
+                  <p className="font-semibold  my-3 flex items-center gap-1">
                     <Palette className="w-4 h-4 " />
                     Color
                   </p>
                   <div className="flex gap-1 items-center">
                     {color.map((item) => (
                       <div
-                        className={
+                        className={cn(
+                          "w-5 h-5 cursor-pointer rounded-full mr-1",
                           selectedColor?.color === item.color
-                            ? " w-5 h-5 cursor-pointer rounded-full border-[2px] border-black"
-                            : "w-5 h-5 cursor-pointer rounded-full border border-gray-600"
-                        }
+                            ? "  border-[2px] border-black"
+                            : " border border-gray-600"
+                        )}
                         style={{ backgroundColor: item.color }}
                         onClick={() => {
+                          if (item.id === selectedColor?.id) {
+                            return;
+                          }
                           setImageLoading(true);
                           setSelectedColor({
                             id: item.id,
@@ -180,29 +187,19 @@ export default function ProductPageClient() {
                     ))}
                   </div>
                 </motion.div>
-                <div className="flex items-center gap-2 mt-1">
-                  <span className="opacity-50 text-sm">Choosen Color : </span>
-                  {selectedColor ? (
-                    <div
-                      className="w-5 h-5 border rounded-full"
-                      style={{ backgroundColor: selectedColor.color }}
-                    />
-                  ) : (
-                    "-"
-                  )}
-                </div>
+
                 <Separator className="my-2" />
                 <motion.div
                   initial={{ opacity: 0, x: 30 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: 0.3, ease: "easeInOut" }}
+                  className="font-michroma"
                 >
-                  <p className="font-semibold text-lg flex items-center gap-1">
+                  <p className=" font-semibold flex items-center gap-1 my-3">
                     <Ruler className="w-4 h-4" />
                     Sizes
-                  </p>{" "}
+                  </p>
                   <div className="flex items-center gap-2">
-                    {" "}
                     {sizeData.map((item) => (
                       <div
                         className={
@@ -212,6 +209,9 @@ export default function ProductPageClient() {
                         }
                         key={item.sizeId}
                         onClick={() => {
+                          if (item.sizeId === selectedSize?.id) {
+                            return;
+                          }
                           setSelectedSize({ id: item.sizeId, size: item.size });
                           setQuantity(1);
                         }}
@@ -221,17 +221,37 @@ export default function ProductPageClient() {
                     ))}
                   </div>
                 </motion.div>
-                <div className="flex items-center gap-2">
-                  <span className="opacity-50 text-sm">Choosen Size : </span>
-                  {selectedSize ? (
-                    <div className="">
-                      <p className="py-1 px-3">{selectedSize.size}</p>
-                    </div>
-                  ) : (
-                    "-"
-                  )}
-                </div>
+
                 <Separator className="my-2" />
+                <div className="flex items-center gap-4">
+                  <div className="flex items-center gap-2 mt-1">
+                    <span className="opacity-50 text-sm font-michroma">
+                      Choosen Color :
+                    </span>
+                    {selectedColor ? (
+                      <div
+                        className="w-5 h-5 border rounded-full border-black"
+                        style={{ backgroundColor: selectedColor.color }}
+                      />
+                    ) : (
+                      "-"
+                    )}
+                  </div>
+                  <div className="flex items-center gap-2 my-2">
+                    <span className="opacity-50 text-sm font-michroma">
+                      Choosen Size :
+                    </span>
+                    {selectedSize ? (
+                      <div className="">
+                        <p className="py-1 px-3 font-michroma font-semibold">
+                          {selectedSize.size}
+                        </p>
+                      </div>
+                    ) : (
+                      "-"
+                    )}
+                  </div>
+                </div>
                 <div>
                   {selectedColor && selectedSize ? (
                     <>
@@ -249,10 +269,10 @@ export default function ProductPageClient() {
                     ""
                   )}
                 </div>
-                <div className="mt-3 text-lg flex items-center gap-1">
+                <div className="mt-3 text-lg flex items-center gap-1 font-michroma">
                   Price :
                   <HyperText
-                    className="font-roboto font-semibold"
+                    className="font-michroma font-semibold"
                     text={String(product.price)}
                   />
                   ks
@@ -324,7 +344,7 @@ export default function ProductPageClient() {
                   </div>
 
                   <Button
-                    className="rounded-none w-full md:w-fit text-xl px-5 py-3"
+                    className="rounded-none w-full md:w-fit text-xl px-5 py-3 font-michroma"
                     disabled={
                       selectedColor &&
                       selectedSize &&
@@ -398,7 +418,7 @@ export default function ProductPageClient() {
                       });
                     }}
                   >
-                    Add to cart
+                    <ShoppingCart className="w-8 h-8" />
                   </Button>
                 </motion.div>
               </div>

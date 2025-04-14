@@ -15,7 +15,14 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { Fullscreen, Loader, RefreshCcw } from "lucide-react";
+import {
+  Fullscreen,
+  Loader,
+  PaletteIcon,
+  RefreshCcw,
+  RulerIcon,
+  ShoppingCart,
+} from "lucide-react";
 import { Button } from "../ui/button";
 import {
   ProductCategories,
@@ -34,6 +41,7 @@ import { useToast } from "@/hooks/use-toast";
 import Cookies from "js-cookie";
 import { Badge } from "../ui/badge";
 import CryptoJS from "crypto-js";
+import { cn } from "@/lib/utils";
 interface Prop {
   product: Products;
   color: { id: string; color?: string; image: string; colorId?: string }[];
@@ -96,7 +104,6 @@ function ProductCardView({
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <div>
-          {" "}
           <TooltipProvider>
             <Tooltip delayDuration={100}>
               <TooltipTrigger>
@@ -120,7 +127,7 @@ function ProductCardView({
           </TooltipProvider>
         </div>
       </DialogTrigger>
-      <DialogContent className="flex flex-col items-center sm:flex-row  gap-10  pt-10 max-w-full  md:max-w-2xl   lg:max-w-4xl">
+      <DialogContent className="flex flex-col items-center sm:flex-row  gap-10  pt-10 max-w-full  md:max-w-2xl   lg:max-w-4xl ">
         <div className="relative size-32 sm:size-full">
           <Image
             src={
@@ -142,28 +149,32 @@ function ProductCardView({
         </div>
         <div className="w-full md:min-w-[50%]  font-roboto flex flex-col overflow-y-scroll p-4 lg:p-0 sm:overflow-auto sm:flex-row gap-10 h-[250px] sm:h-full">
           <div className="w-full">
-            <DialogTitle className="font-semibold md:text-xl lg:text-4xl">
+            <DialogTitle className="font-semibold font-michroma md:text-xl lg:text-2xl">
               {product.name}
             </DialogTitle>
-            <DialogDescription className="text-sm lg:text-xl">
+            <DialogDescription className="text-sm font-roboto lg:text-sm mt-2 mb-4">
               Category : {productCategory?.categoryName} <br />
-              <span className="text-sm">
-                Material Type : {productType?.type}
-              </span>
+              <span>Material Type : {productType?.type}</span>
             </DialogDescription>
             <div>
               <div>
-                <p className="font-semibold text-lg mt-2">Color</p>
-                <div className="flex gap-1 items-center">
+                <p className="font-semibold text-sm mt-2 font-michroma flex items-center gap-2 my-3">
+                  <PaletteIcon className="w-5 h-5" /> Color
+                </p>
+                <div className="flex gap-1 items-center w-full flex-wrap">
                   {color.map((item) => (
                     <div
-                      className={
+                      className={cn(
+                        "w-5 h-5 cursor-pointer rounded-full mr-1",
                         selectedColor?.color === item.color
-                          ? " w-5 h-5 cursor-pointer rounded-full border-[2px] border-black"
-                          : "w-5 h-5 cursor-pointer rounded-full border border-gray-600"
-                      }
+                          ? "  border-[2px] border-black"
+                          : " border border-gray-600"
+                      )}
                       style={{ backgroundColor: item.color }}
                       onClick={() => {
+                        if (item.id === selectedColor?.id) {
+                          return;
+                        }
                         setImageLoading(true);
                         setSelectedColor({
                           id: item.id,
@@ -178,31 +189,26 @@ function ProductCardView({
                   ))}
                 </div>
               </div>
-              <div className="flex items-center gap-2 mt-1">
-                <span className="opacity-50 text-sm">Choosen Color : </span>
-                {selectedColor ? (
-                  <div
-                    className="w-5 h-5 border rounded-full"
-                    style={{ backgroundColor: selectedColor.color }}
-                  />
-                ) : (
-                  "-"
-                )}
-              </div>
+
               <Separator className="my-2" />
               <div>
-                <p className="font-semibold text-lg">Sizes</p>{" "}
+                <p className="font-semibold text-sm font-michroma flex items-center gap-2 my-3">
+                  <RulerIcon className="w-5 h-5" />
+                  Sizes
+                </p>
                 <div className="flex items-center gap-2">
-                  {" "}
                   {sizeData.map((item) => (
                     <div
-                      className={
-                        selectedSize?.id === item.sizeId
-                          ? "border-[2px] border-black cursor-pointer"
-                          : "cursor-pointer"
-                      }
+                      className={cn(
+                        "cursor-pointer font-michroma",
+                        selectedSize?.id === item.sizeId &&
+                          "border-[2px] border-black "
+                      )}
                       key={item.sizeId}
                       onClick={() => {
+                        if (item.sizeId === selectedSize?.id) {
+                          return;
+                        }
                         setSelectedSize({ id: item.sizeId, size: item.size });
                         setQuantity(1);
                       }}
@@ -212,17 +218,37 @@ function ProductCardView({
                   ))}
                 </div>
               </div>
-              <div className="flex items-center gap-2">
-                <span className="opacity-50 text-sm">Choosen Size : </span>
-                {selectedSize ? (
-                  <div className="">
-                    <p className="py-1 px-3">{selectedSize.size}</p>
-                  </div>
-                ) : (
-                  "-"
-                )}
-              </div>
+
               <Separator className="my-2" />
+              <div className="flex flex-col gap-3">
+                <div className="flex items-center gap-2 mt-1">
+                  <span className="opacity-50 text-xs font-michroma">
+                    Choosen Color :
+                  </span>
+                  {selectedColor ? (
+                    <div
+                      className="w-5 h-5 border rounded-full"
+                      style={{ backgroundColor: selectedColor.color }}
+                    />
+                  ) : (
+                    "-"
+                  )}
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="opacity-50 text-xs font-michroma">
+                    Choosen Size :
+                  </span>
+                  {selectedSize ? (
+                    <div className="">
+                      <p className="py-1 px-3 font-michroma">
+                        {selectedSize.size}
+                      </p>
+                    </div>
+                  ) : (
+                    "-"
+                  )}
+                </div>
+              </div>
               <div>
                 {selectedColor && selectedSize ? (
                   <>
@@ -240,11 +266,11 @@ function ProductCardView({
                   ""
                 )}
               </div>
-              <div className="mt-3 text-lg">
-                Price :{" "}
+              <div className="mt-3 text-lg font-michroma">
+                Price :
                 <span className="font-semibold">{product.price} Kyats</span>
               </div>
-              <div className="flex justify-end gap-3">
+              <div className="flex flex-col md:flex-row items-center justify-end gap-3 mt-5">
                 <div className="flex items-center gap-3">
                   <Button
                     variant="ghost"
@@ -306,7 +332,7 @@ function ProductCardView({
                 </div>
 
                 <Button
-                  className=""
+                  className="font-michroma w-full md:w-fit"
                   disabled={
                     selectedColor &&
                     selectedSize &&
@@ -395,7 +421,7 @@ function ProductCardView({
                   {addToCartLoading ? (
                     <RefreshCcw className="w-4 h-4 animate-spin" />
                   ) : (
-                    " Add to cart"
+                    <ShoppingCart className="w-8 h-8" />
                   )}
                 </Button>
               </div>

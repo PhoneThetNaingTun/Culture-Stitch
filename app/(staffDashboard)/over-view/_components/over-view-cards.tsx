@@ -3,7 +3,7 @@ import React from "react";
 
 interface Prop {
   title: string;
-  number: string;
+  number: number;
 }
 
 export default function OverViewCard({ title, number }: Prop) {

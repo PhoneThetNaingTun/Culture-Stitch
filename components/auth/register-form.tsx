@@ -60,7 +60,7 @@ export function RegisterForm() {
   };
 
   return (
-    <Card className="mx-auto w-full lg:w-1/3">
+    <Card className="mx-auto w-full lg:w-1/3 rounded-none lg:rounded-lg">
       <CardHeader>
         <CardTitle className="text-2xl">Register Account</CardTitle>
         <CardDescription>Welcome To Little SRN.Register Here!</CardDescription>

@@ -27,6 +27,7 @@ export const HomePageClient = ({ board, featuredProducts }: Prop) => {
           backgroundSize: "cover",
           backgroundRepeat: "no-repeat",
           height: "calc(100vh - 70px)",
+          backgroundAttachment: "fixed",
         }}
       >
         <motion.div
@@ -42,7 +43,7 @@ export const HomePageClient = ({ board, featuredProducts }: Prop) => {
         </motion.div>
       </div>
       {featuredProducts.length > 0 ? (
-        <div className=" px-6 lg:px-28 py-10 bg-slate-50">
+        <div className=" px-6 lg:px-28 py-10 ">
           <p className="font-roboto text-2xl lg:text-4xl ml-2 border-b-2 border-black">
             Featured Products
           </p>
@@ -64,8 +65,8 @@ export const HomePageClient = ({ board, featuredProducts }: Prop) => {
               <motion.div
                 key={item.id}
                 variants={{
-                  hidden: { opacity: 0, y: 20 }, // Start off-screen
-                  visible: { opacity: 1, y: 0 }, // Animate to visible
+                  hidden: { opacity: 0, y: 20 },
+                  visible: { opacity: 1, y: 0 },
                 }}
                 transition={{ ease: "easeInOut" }}
               >
@@ -76,11 +77,11 @@ export const HomePageClient = ({ board, featuredProducts }: Prop) => {
         </div>
       ) : null}
 
-      <div className="h-screen">
+      <div className="">
         <EventCarousel />
       </div>
       <div>
-        <div className=" px-6 lg:px-28 mt-20">
+        <div className=" px-6 lg:px-28 py-10 ">
           <div className="flex flex-col-reverse lg:flex-row gap-4 justify-around items-center">
             <Image
               src={"/model4.jpg"}

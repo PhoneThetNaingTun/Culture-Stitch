@@ -31,6 +31,7 @@ export default function ProductCardInCart({ item, loading }: Prop) {
   );
   const { products } = useAppSelector((state) => state.Product);
   const { sizes } = useAppSelector((state) => state.Size);
+  const { colors } = useAppSelector((state) => state.Color);
   const { productColors } = useAppSelector((state) => state.ProductColor);
   const productSizeColor = productSizeColors.find(
     (pSc) => pSc.id === item.productSCId
@@ -42,6 +43,7 @@ export default function ProductCardInCart({ item, loading }: Prop) {
     (product) => product.id === productColor?.productId
   );
   const size = sizes.find((size) => size.id === productSizeColor?.sizeId);
+  const color = colors.find((color) => color.id === productColor?.colorId);
 
   const handleIncreaseQuantity = () => {
     const userId = user.id;
@@ -175,17 +177,26 @@ export default function ProductCardInCart({ item, loading }: Prop) {
           className="object-cover rounded-lg"
           width={500}
           height={500}
-        />{" "}
+        />
       </div>
       <div className="flex-1   flex flex-col justify-between gap-4">
         <div>
-          <p className="font-roboto font-semibold text-sm xl:text-3xl">
+          <p className="font-michroma font-semibold text-sm xl:text-2xl">
             {product?.name}
           </p>
-          <p className="font-roboto text-gray-500">
-            Price :{product?.price} Ks
+          <p className="font-roboto text-gray-500 text-sm mt-3">
+            Price : {product?.price} Ks
           </p>
-          <p className="font-roboto text-gray-500">Size :{size?.size}</p>
+          <p className="font-roboto text-gray-500 text-sm">
+            Size : {size?.size}
+          </p>
+          <div className="font-roboto text-gray-500 flex items-center gap-3 text-sm">
+            Color :
+            <div
+              className="w-5 h-5 rounded-full"
+              style={{ backgroundColor: color?.color }}
+            />
+          </div>
         </div>
         <div className="flex">
           <Button

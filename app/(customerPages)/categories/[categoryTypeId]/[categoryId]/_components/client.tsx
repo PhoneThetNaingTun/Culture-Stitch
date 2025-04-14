@@ -103,42 +103,57 @@ export default function CategoryPageClient() {
       <div>
         <FilterSheet />
       </div>
-      <motion.div
-        initial="hidden"
-        whileInView="visible"
-        variants={{
-          hidden: { opacity: 0 },
-          visible: {
-            opacity: 1,
-            transition: {
-              staggerChildren: 0.2,
-            },
-          },
-        }}
-        className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 mt-3 gap-4"
-      >
+      <div>
         {productInCategory.length === 0 ? (
-          "No Product Found"
+          <p className="text-center text-lg text-gray-700 ">
+            No product found!
+          </p>
         ) : (
           <>
             {filterColor || filterSize ? (
               filteredProducts.length > 0 ? (
-                filteredProducts.map((item) => <ProductCard data={item} />)
+                filteredProducts.map((item) => (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 mt-3 gap-4">
+                    <ProductCard data={item} />
+                  </div>
+                ))
               ) : (
                 <div className="w-full h-52 flex justify-center items-center">
-                  <p>No Product Found</p>
+                  <p> No Product Found</p>
                 </div>
               )
             ) : (
-              <>
+              <motion.div
+                initial="hidden"
+                whileInView="visible"
+                variants={{
+                  hidden: { opacity: 0 },
+                  visible: {
+                    opacity: 1,
+                    transition: {
+                      staggerChildren: 0.2,
+                    },
+                  },
+                }}
+                className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 mt-3 gap-4"
+              >
                 {productInCategory.map((item) => (
-                  <ProductCard data={item} key={item.id} />
+                  <motion.div
+                    key={item.id}
+                    variants={{
+                      hidden: { opacity: 0, y: 20 },
+                      visible: { opacity: 1, y: 0 },
+                    }}
+                    transition={{ ease: "easeInOut" }}
+                  >
+                    <ProductCard data={item} />
+                  </motion.div>
                 ))}
-              </>
+              </motion.div>
             )}
           </>
         )}
-      </motion.div>
+      </div>
     </div>
   );
 }

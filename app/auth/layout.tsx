@@ -8,6 +8,7 @@ import { ReactNode, useEffect } from "react";
 import Cookies from "js-cookie";
 import { Item } from "@/types/addToCart";
 import CryptoJS from "crypto-js";
+import Footer from "@/components/customerPage/footer";
 interface Prop {
   children: ReactNode;
 }
@@ -29,7 +30,6 @@ const layout = ({ children }: Prop) => {
     let guestCart: any = [];
     const guest = Cookies.get("guest");
     if (guest) {
-      // Decrypt the savedCart
       const bytes = CryptoJS.AES.decrypt(
         guest,
         String(process.env.NEXT_PUBLIC_COOKIE_KEY)
@@ -43,7 +43,6 @@ const layout = ({ children }: Prop) => {
       let savedCart: any = [];
 
       if (encryptedSavedCart) {
-        // Decrypt the savedCart
         const bytes = CryptoJS.AES.decrypt(
           encryptedSavedCart,
           String(process.env.NEXT_PUBLIC_COOKIE_KEY)
@@ -53,13 +52,11 @@ const layout = ({ children }: Prop) => {
       }
 
       const combinedCart = savedCart.map((savedItem: Item) => {
-        // Check if the product already exists in guestCart
         const matchingGuestItem = guestCart.find(
           (guestItem: Item) => guestItem.productSCId === savedItem.productSCId
         );
 
         if (matchingGuestItem) {
-          // If it exists, combine the quantities
           const combinedQuantity =
             savedItem.quantity + matchingGuestItem.quantity;
 
@@ -69,13 +66,11 @@ const layout = ({ children }: Prop) => {
 
           const maxQuantity = productSizeColor ? productSizeColor.quantity : 0;
 
-          // If combined quantity exceeds max quantity, set it to maxQuantity
           return {
             ...savedItem,
             quantity: Math.min(combinedQuantity, maxQuantity),
           };
         } else {
-          // If no match, keep the savedItem as is
           return savedItem;
         }
       });
@@ -85,7 +80,6 @@ const layout = ({ children }: Prop) => {
           (savedItem: Item) => savedItem.productSCId === guestItem.productSCId
         );
         if (!matchingSavedItem) {
-          // If the item doesn't exist in savedCart, add it and limit quantity by available stock
           const productSizeColor = productSizeColors.find(
             (product) => product.id === guestItem.productSCId
           );
@@ -99,7 +93,6 @@ const layout = ({ children }: Prop) => {
         }
       });
 
-      // Encrypt the combined cart before saving it to the cookie
       const encryptedCombinedCart = CryptoJS.AES.encrypt(
         JSON.stringify(combinedCart),
         String(process.env.NEXT_PUBLIC_COOKIE_KEY)
@@ -149,7 +142,8 @@ const layout = ({ children }: Prop) => {
   return (
     <>
       <NavBar />
-      <div className=" flex justify-center mt-32 px-5">{children}</div>
+      <div className="flex justify-center items-center mt-10">{children}</div>
+      <Footer />
     </>
   );
 };

@@ -15,6 +15,7 @@ import { setOrders } from "./OrderSlice";
 import { setOrderDetails } from "./OrderDetailSlice";
 import { setCustomers } from "./CustomerSlice";
 import { setOrderConfirms } from "./OrderConfirmSlice";
+import { setReviews } from "./ReviewSlice";
 
 const initialState: dashBoardAppSlice = {
   user: {},
@@ -45,6 +46,7 @@ export const fetchDashBoardApp = createAsyncThunk(
       orderDetails,
       customers,
       orderConfirms,
+      reviews,
     } = dataFromServer;
     thunkApi.dispatch(setUser(user));
     thunkApi.dispatch(setOrders(orders));
@@ -52,6 +54,7 @@ export const fetchDashBoardApp = createAsyncThunk(
     thunkApi.dispatch(setSizes(sizes));
     thunkApi.dispatch(setTypes(types));
     thunkApi.dispatch(setColors(colors));
+    thunkApi.dispatch(setReviews(reviews));
     thunkApi.dispatch(setProducts(products));
     thunkApi.dispatch(setCustomers(customers));
     thunkApi.dispatch(setOrderDetails(orderDetails));

@@ -18,6 +18,7 @@ import CheckOutSliceReducer from "./Slices/CheckOutSlice";
 import OrderSliceReducer from "./Slices/OrderSlice";
 import CustomerSliceReducer from "./Slices/CustomerSlice";
 import OrderConfirmSliceReducer from "./Slices/OrderConfirmSlice";
+import ReviewSliceReducer from "./Slices/ReviewSlice";
 
 export const store = configureStore({
   reducer: {
@@ -39,6 +40,7 @@ export const store = configureStore({
     Order: OrderSliceReducer,
     Customer: CustomerSliceReducer,
     OrderConfirm: OrderConfirmSliceReducer,
+    Review: ReviewSliceReducer,
   },
 });
 

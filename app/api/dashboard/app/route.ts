@@ -34,6 +34,7 @@ export async function GET() {
       const orderConfirms = await prisma.orderConfirm.findMany({
         where: { userId: userFromDb.id },
       });
+      const reviews = await prisma.reviews.findMany();
       return NextResponse.json(
         {
           boards,
@@ -51,6 +52,7 @@ export async function GET() {
           orderDetails,
           customers,
           orderConfirms,
+          reviews,
         },
         { status: 200 }
       );

@@ -21,6 +21,7 @@ export async function GET() {
   const productCategoryTypes = await prisma.productCategoryTypes.findMany({
     orderBy: { createdAt: "asc" },
   });
+  const reviews = await prisma.reviews.findMany();
 
   if (session) {
     const { user } = session;
@@ -49,6 +50,7 @@ export async function GET() {
         orders,
         orderDetails,
         orderConfirms: [],
+        reviews,
       });
     } else {
       return NextResponse.json({ error: "User Not Found" }, { status: 404 });
@@ -69,6 +71,7 @@ export async function GET() {
       orders: [],
       orderDetails: [],
       orderConfirms: [],
+      reviews,
     });
   }
 }

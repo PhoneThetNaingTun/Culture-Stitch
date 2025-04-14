@@ -22,7 +22,7 @@ function LogoutDialog() {
       </DialogTrigger>
       <DialogContent className="max-w-lg">
         <DialogHeader>Are you sure you want to logout?</DialogHeader>
-        <DialogDescription>This action cannot be undeone!</DialogDescription>
+        <DialogDescription>This action cannot be undone!</DialogDescription>
         <div className="flex justify-between">
           <Button
             onClick={() => signOut()}

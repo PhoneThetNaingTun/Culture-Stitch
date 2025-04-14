@@ -12,6 +12,7 @@ export default function AboutUsPageClient() {
           backgroundSize: "cover",
           backgroundRepeat: "no-repeat",
           height: "calc(100vh - 70px)",
+          backgroundAttachment: "fixed",
         }}
       >
         <motion.div
@@ -32,7 +33,7 @@ export default function AboutUsPageClient() {
           initial={{ opacity: 0, x: -30 }}
           whileInView={{ opacity: 1, x: 0 }}
           transition={{ delay: 0.8, ease: "easeInOut" }}
-          className="flex-1"
+          className="flex-1 hidden lg:block"
           style={{
             backgroundImage: `url("/model5.jpg")`,
             backgroundSize: "cover",
@@ -67,7 +68,7 @@ export default function AboutUsPageClient() {
           <p className="text-[#790800] text-2xl lg:text-5xl mb-3">
             Lookin Forward
           </p>
-          <p className="text-3xl my-3">
+          <p className="text-sm md:text-3xl my-3">
             Our dedication to quality, community, and culture remains
             unwavering. Whether you’re a long-time supporter or a new visitor,
             we’re here to bring you an exceptional fashion experience.

@@ -16,6 +16,7 @@ import { NewProductCaotegoryDialog } from "./NewProductCategoryDialog";
 import { useAppSelector } from "@/store/hooks";
 import { NewProductCaotegoryTypeDialog } from "./NewProductCategoryTypeDialog";
 import { productCategoryTypeColumn } from "./category-type-column";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export function ProductCategoryPageClient() {
   const { categoryTypes } = useAppSelector((state) => state.CategoryType);
@@ -52,27 +53,43 @@ export function ProductCategoryPageClient() {
         </div>
       </header>
       <div className="px-4">
-        <p className="font-roboto font-semibold text-2xl">
-          Product Category Types
-        </p>
-        <div className="flex justify-end my-3">
-          <NewProductCaotegoryTypeDialog />
-        </div>
-        <DataTable
-          columns={productCategoryTypeColumn}
-          data={categoryTypes}
-          filterKey="categroyTypeName"
-        />
-        <p className="font-roboto font-semibold text-2xl">Product Categories</p>
-        <div className="flex justify-end my-3">
-          <NewProductCaotegoryDialog />
-        </div>
-        <DataTable
-          //@ts-ignore
-          columns={productCategoryColumn}
-          data={produtCategoryData}
-          filterKey="categoryName"
-        />
+        <Tabs defaultValue="productCategoryTypes">
+          <TabsList>
+            <TabsTrigger value="productCategoryTypes">
+              Product Category Types
+            </TabsTrigger>
+            <TabsTrigger value="productCategories">
+              Product Categories
+            </TabsTrigger>
+          </TabsList>
+          <TabsContent value="productCategoryTypes">
+            <p className="font-roboto font-semibold text-2xl">
+              Product Category Types
+            </p>
+            <div className="flex justify-end my-3">
+              <NewProductCaotegoryTypeDialog />
+            </div>
+            <DataTable
+              columns={productCategoryTypeColumn}
+              data={categoryTypes}
+              filterKey="categroyTypeName"
+            />
+          </TabsContent>
+          <TabsContent value="productCategories">
+            <p className="font-roboto font-semibold text-2xl">
+              Product Categories
+            </p>
+            <div className="flex justify-end my-3">
+              <NewProductCaotegoryDialog />
+            </div>
+            <DataTable
+              //@ts-ignore
+              columns={productCategoryColumn}
+              data={produtCategoryData}
+              filterKey="categoryName"
+            />
+          </TabsContent>
+        </Tabs>
       </div>
     </div>
   );
